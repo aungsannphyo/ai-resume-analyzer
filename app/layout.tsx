@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
+import Providers from "../provider/providers";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -15,8 +17,6 @@ export const metadata: Metadata = {
     "Intelligent resume analysis tool for evaluating Project Manager candidates with AI-powered competency breakdowns and scoring.",
 };
 
-import Providers from "../provider/providers";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,6 +29,7 @@ export default function RootLayout({
         className={`${poppins.variable} font-sans antialiased`}
       >
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
