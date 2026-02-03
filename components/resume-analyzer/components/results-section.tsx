@@ -1,21 +1,23 @@
 import type { AnalysisResult } from "@/types/analysis";
 import { CheckCircle2, ShieldAlert } from "lucide-react";
+import ErrorBanner from "../../error-banner";
 
 // Sub-components
-import ActionBar from "./results/action-bar";
-import CandidateHeader from "./results/candidate-header";
-import DecisionCard from "./results/decision-card";
-import ScoringOverview from "./results/scoring-overview";
-import AssessmentCard from "./results/assessment-card";
-import CompetencyList from "./results/competency-list";
-import ListItems from "./results/list-items";
-import InterviewGuide from "./results/interview-guide";
+import ActionBar from "./results-section/action-bar";
+import CandidateHeader from "./results-section/candidate-header";
+import DecisionCard from "./results-section/decision-card";
+import ScoringOverview from "./results-section/scoring-overview";
+import AssessmentCard from "./results-section/assessment-card";
+import CompetencyList from "./results-section/competency-list";
+import ListItems from "./results-section/list-items";
+import InterviewGuide from "./results-section/interview-guide";
 
 interface ResultsSectionProps {
   analysisResult: AnalysisResult;
   onExport: () => void;
   onNewAnalysis: () => void;
   isExporting: boolean;
+  exportError?: string | null;
 }
 
 const ResultsSection = ({
@@ -23,9 +25,12 @@ const ResultsSection = ({
   onExport,
   onNewAnalysis,
   isExporting,
+  exportError,
 }: ResultsSectionProps) => {
   return (
     <section className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/50 mb-8">
+      {exportError && <ErrorBanner message={exportError} className="mb-6" />}
+
       {/* Top Actions */}
       <ActionBar
         onExport={onExport}

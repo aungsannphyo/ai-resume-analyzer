@@ -1,4 +1,4 @@
-import { User, Briefcase, BadgeCheck, MapPin } from "lucide-react";
+import { User, BadgeCheck } from "lucide-react";
 
 interface CandidateHeaderProps {
   name: string;
@@ -7,7 +7,7 @@ interface CandidateHeaderProps {
 
 const CandidateHeader = ({ name, designation }: CandidateHeaderProps) => {
   return (
-    <div className="relative overflow-hidden mb-8 p-6 sm:p-10 bg-white/40 backdrop-blur-md rounded-4xl md:rounded-[2.5rem] border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] animate-slide-in hover:shadow-[0_12px_48px_0_rgba(31,38,135,0.1)] transition-all duration-500">
+    <div className="relative overflow-hidden mb-8 p-6 sm:p-10 bg-white/40 backdrop-blur-md rounded-3xl md:rounded-[2.5rem] border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] animate-slide-in hover:shadow-[0_12px_48px_0_rgba(31,38,135,0.1)] transition-all duration-500">
       {/* Premium Decorative Elements */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-linear-to-bl from-[#5cbe4c]/10 to-transparent rounded-full blur-3xl -mr-32 -mt-32" />
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-linear-to-tr from-blue-500/5 to-transparent rounded-full blur-2xl -ml-24 -mb-24" />
@@ -24,7 +24,7 @@ const CandidateHeader = ({ name, designation }: CandidateHeaderProps) => {
       <div className="relative flex flex-col md:flex-row items-center gap-8 md:gap-10">
         {/* Avatar Container with enhanced depth */}
         <div className="relative shrink-0 group">
-          <div className="absolute -inset-2 bg-linear-to-tr from-[#5cbe4c]/30 to-emerald-400/30 rounded-4xl blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
+          <div className="absolute -inset-2 bg-linear-to-tr from-[#5cbe4c]/30 to-emerald-400/30 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
 
           <div className="relative w-28 h-28 sm:w-32 sm:h-32 bg-white rounded-3xl p-1 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-100 flex items-center justify-center overflow-hidden transition-transform duration-500 group-hover:scale-[1.02]">
             <div className="absolute inset-0 bg-linear-to-br from-[#5cbe4c]/10 via-white to-transparent" />

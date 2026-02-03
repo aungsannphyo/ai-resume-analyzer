@@ -1,71 +1,14 @@
-import {
-  LayoutGrid,
-  Users,
-  ShieldAlert,
-  Laptop,
-  BadgeDollarSign,
-  LucideIcon,
-} from "lucide-react";
+import { LayoutGrid } from "lucide-react";
 import { AnalysisDomain } from "@/types/analysis";
+import { domainUiList } from "@/lib/domain-ui";
+import { useMobile } from "@/hooks/useMobile";
 
 interface DomainSelectorProps {
   selectedDomain: AnalysisDomain;
   onSelect: (domain: AnalysisDomain) => void;
 }
 
-const domains: {
-  id: AnalysisDomain;
-  label: string;
-  description: string;
-  icon: LucideIcon;
-  color: string;
-  bg: string;
-  border: string;
-  active: string;
-}[] = [
-  {
-    id: AnalysisDomain.TECHNOLOGY,
-    label: "Technology",
-    description: "Software, Projects & Delivery",
-    icon: Laptop,
-    color: "text-blue-600",
-    bg: "bg-blue-100/50",
-    border: "hover:border-blue-500/50",
-    active: "border-blue-500 bg-blue-50/50 ring-blue-500/10",
-  },
-  {
-    id: AnalysisDomain.FINANCE_AND_ACCOUNTING,
-    label: "Finance",
-    description: "Accounting, FP&A & Treasury",
-    icon: BadgeDollarSign,
-    color: "text-emerald-600",
-    bg: "bg-emerald-100/50",
-    border: "hover:border-emerald-500/50",
-    active: "border-emerald-500 bg-emerald-50/50 ring-emerald-500/10",
-  },
-  {
-    id: AnalysisDomain.HR,
-    label: "Human Resources",
-    description: "Talent, Policies & ER",
-    icon: Users,
-    color: "text-pink-600",
-    bg: "bg-pink-100/50",
-    border: "hover:border-pink-500/50",
-    active: "border-pink-500 bg-pink-50/50 ring-pink-500/10",
-  },
-  {
-    id: AnalysisDomain.RISK_AND_COMPLIANCE,
-    label: "Risk & Compliance",
-    description: "ERM, AML & Data Privacy",
-    icon: ShieldAlert,
-    color: "text-orange-600",
-    bg: "bg-orange-100/50",
-    border: "hover:border-orange-500/50",
-    active: "border-orange-500 bg-orange-50/50 ring-orange-500/10",
-  },
-];
-
-import { useMobile } from "@/hooks/useMobile";
+const domains = domainUiList;
 
 const DomainSelector = ({ selectedDomain, onSelect }: DomainSelectorProps) => {
   const isMobile = useMobile(768);
@@ -82,7 +25,7 @@ const DomainSelector = ({ selectedDomain, onSelect }: DomainSelectorProps) => {
           <select
             value={selectedDomain}
             onChange={(e) => onSelect(e.target.value as AnalysisDomain)}
-            className="w-full appearance-none bg-white border-2 border-slate-100 rounded-2xl px-5 py-4 text-slate-700 font-bold focus:border-[#5cbe4c] focus:ring-4 focus:ring-[#5cbe4c]/10 transition-all outline-hidden cursor-pointer shadow-xs"
+            className="w-full appearance-none bg-white border-2 border-slate-100 rounded-2xl px-5 py-4 text-slate-700 font-bold focus:border-[#5cbe4c] focus:ring-4 focus:ring-[#5cbe4c]/10 transition-all outline-none cursor-pointer shadow-sm"
           >
             {domains.map((domain) => (
               <option key={domain.id} value={domain.id}>
@@ -136,7 +79,7 @@ const DomainSelector = ({ selectedDomain, onSelect }: DomainSelectorProps) => {
               className={`group flex flex-col p-5 rounded-3xl border-2 transition-all duration-300 cursor-pointer text-left relative overflow-hidden ${
                 isActive
                   ? `${domain.active} ring-4 shadow-sm`
-                  : `border-slate-100 bg-white shadow-xs ${domain.border} hover:shadow-md hover:-translate-y-1`
+                  : `border-slate-100 bg-white shadow-sm ${domain.border} hover:shadow-md hover:-translate-y-1`
               }`}
             >
               <div

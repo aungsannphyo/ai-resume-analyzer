@@ -20,10 +20,21 @@ export const AnalysisService = {
       body: JSON.stringify(payload),
     });
 
-    const data: AnalyzeResponse = await response.json();
+    let data: AnalyzeResponse | null = null;
+    try {
+      data = (await response.json()) as AnalyzeResponse;
+    } catch {
+      data = null;
+    }
 
-    if (!data.success || !data.data) {
-      throw new Error(data.error || "Analysis failed");
+    if (!response.ok) {
+      throw new Error(
+        data?.error || `Analysis failed (status ${response.status})`,
+      );
+    }
+
+    if (!data?.success || !data.data) {
+      throw new Error(data?.error || "Analysis failed");
     }
 
     return data.data;

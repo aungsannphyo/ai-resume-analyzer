@@ -10,18 +10,28 @@ interface AnalyzeParams {
 }
 
 export const useAnalyzeResume = () => {
-  const { setAnalysisResult, setShowResults, setError, setAnalysisStep } =
-    useAnalysisStore();
+  const {
+    setAnalysisResult,
+    setShowResults,
+    setError,
+    setExportError,
+    setAnalysisStep,
+    setExtractionProgress,
+  } = useAnalysisStore();
 
   return useMutation({
     mutationFn: async ({ jdText, resumeFile, domain }: AnalyzeParams) => {
       const { extractTextFromPDF } = await import("@/utils/pdf");
-      const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
       // 1. Extract text on the client side
       setAnalysisStep(AnalysisStep.EXTRACTING);
-      await delay(3000);
-      const resumeText = await extractTextFromPDF(resumeFile);
+      setExtractionProgress(0);
+      const resumeText = await extractTextFromPDF(
+        resumeFile,
+        (progress) => {
+          setExtractionProgress(progress);
+        },
+      );
 
       if (!resumeText.trim()) {
         throw new Error(
@@ -31,6 +41,7 @@ export const useAnalyzeResume = () => {
 
       // 2. Send the extracted text to the API
       setAnalysisStep(AnalysisStep.ANALYZING);
+      setExtractionProgress(100);
 
       return await AnalysisService.analyzeResume({
         jdText,
@@ -38,15 +49,25 @@ export const useAnalyzeResume = () => {
         domain,
       });
     },
+    onMutate: () => {
+      setError(null);
+      setExportError(null);
+      setExtractionProgress(0);
+    },
     onSuccess: (data) => {
       setAnalysisResult(data);
       setShowResults(true);
       setAnalysisStep(AnalysisStep.COMPLETED);
+      setError(null);
+      setExportError(null);
+      setExtractionProgress(100);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
     onError: (error: Error) => {
       setError(error.message);
+      setExportError(null);
       setAnalysisStep(AnalysisStep.IDLE);
+      setExtractionProgress(0);
     },
   });
 };

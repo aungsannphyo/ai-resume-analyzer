@@ -1,116 +1,98 @@
 # AI-Powered Resume Analyzer
 
-An intelligent resume analysis tool powered by Hugging Face AI that evaluates Project Manager candidates with comprehensive competency breakdowns and scoring.
+An intelligent resume analysis tool powered by Groq Llama 3 that evaluates candidates using job-description-aware, domain-specific scoring.
 
 ## Features
 
-- 🤖 **AI-Powered Analysis** - Uses Hugging Face's Mistral-7B model for intelligent resume evaluation
-- 📊 **Comprehensive Scoring** - Overall score (0-100) with detailed competency breakdown
-- 🎯 **7 Key Competencies** - Evaluates Planning, Agile/Scrum, Stakeholder Management, Risk Management, Budget Management, Leadership, and PM Tools
-- 💪 **Strengths & Gaps** - Identifies top 3 strengths and potential areas for improvement
-- 📥 **Export Reports** - Download analysis as Markdown files
-- 🎨 **Beautiful UI** - Modern dark theme with gradients and smooth animations
-- 📱 **Responsive Design** - Works perfectly on desktop, tablet, and mobile
+- AI-powered analysis using Groq Llama 3
+- Job description + resume alignment
+- Domain-specific competency breakdowns and scoring
+- PDF resume upload with client-side text extraction
+- Exportable PDF report
+- Modern responsive UI
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ installed
-- A Hugging Face account (free)
+- A Groq API key
 
 ### Installation
 
-1. **Get your Hugging Face API Token**
-   - Visit [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-   - Create a new token (read access is sufficient)
-   - Copy the token
-
-2. **Configure Environment Variables**
+1. Configure environment variables
    - Open `.env.local` in the project root
-   - Replace `your_huggingface_token_here` with your actual token:
+   - Add the following values:
 
    ```
-   HUGGINGFACE_API_TOKEN=hf_your_actual_token_here
+   GROQ_API_KEY=your_groq_api_key
+   GROQ_MODEL=llama-3.1-8b-instant
    ```
 
-3. **Start the Development Server**
+   `GROQ_MODEL` is optional. If omitted, the app uses `llama-3.1-8b-instant` by default.
+
+2. Start the development server
 
    ```bash
    npm run dev
    ```
 
-4. **Open the Application**
-   - Navigate to [http://localhost:3000](http://localhost:3000)
-   - The AI Resume Analyzer is ready to use!
+3. Open the application
+   - Navigate to `http://localhost:3000`
 
 ## How to Use
 
-1. **Enter Keywords (Optional)**
-   - Add specific keywords you want the AI to focus on
-   - Example: "Agile, Scrum, Budget Management, Stakeholder Communication"
-   - Separate multiple keywords with commas
-
-2. **Paste Resume Text**
-   - Copy and paste the candidate's resume into the text area
-   - Include work experience, skills, certifications, and achievements
-
-3. **Analyze**
-   - Click "Analyze Resume" button
-   - Wait for the AI to process (usually 5-15 seconds)
-
-4. **Review Results**
-   - Overall PM Score (0-100)
-   - Detailed assessment
-   - Competency breakdown with ratings
-   - Key strengths
-   - Potential gaps with interview questions
-
-5. **Export (Optional)**
-   - Click "Export Report" to download as Markdown
-   - Use for documentation or sharing with team
+1. Select a target domain.
+2. Paste the job description.
+3. Upload a resume PDF.
+4. Click "Analyze Resume" and review results.
+5. Export the report as PDF if needed.
 
 ## Technology Stack
 
-- **Frontend**: Next.js 16, React 19, TypeScript
-- **AI**: Hugging Face Inference API (Mistral-7B-Instruct)
-- **Styling**: Custom CSS with modern design system
-- **API**: Next.js API Routes
+- Frontend: Next.js 16, React 19, TypeScript
+- AI: Groq API (Llama 3)
+- State: Zustand, React Query
+- Styling: Tailwind CSS
+- API: Next.js API Routes
 
 ## Project Structure
 
 ```
 my-app/
-├── app/
-│   ├── api/
-│   │   └── analyze/
-│   │       └── route.ts          # AI analysis API endpoint
-│   ├── globals.css               # Global styles & design system
-│   ├── resume-analyzer.css       # Component-specific styles
-│   ├── page.tsx                  # Main resume analyzer component
-│   └── layout.tsx                # Root layout
-├── types/
-│   └── analysis.ts               # TypeScript type definitions
-├── .env.local                    # Environment variables (API token)
-└── package.json                  # Dependencies
+|-- app/
+|   |-- api/analyze/route.ts
+|   |-- globals.css
+|   |-- layout.tsx
+|   `-- page.tsx
+|-- components/
+|-- hooks/
+|-- prompts/
+|-- provider/
+|-- services/
+|-- store/
+|-- types/
+|-- utils/
+|-- public/
+|-- .env.local
+`-- package.json
 ```
 
 ## API Endpoint
 
 ### POST `/api/analyze`
 
-Analyzes a resume using AI.
-
-**Request Body:**
+Request body:
 
 ```json
 {
+  "jdText": "string (required)",
   "resumeText": "string (required)",
-  "keywords": "string (optional)"
+  "domain": "string (required)"
 }
 ```
 
-**Response:**
+Response:
 
 ```json
 {
@@ -127,30 +109,24 @@ Analyzes a resume using AI.
 
 ## Notes
 
-- **API Rate Limits**: Hugging Face free tier has rate limits. For production use, consider upgrading.
-- **Model Selection**: Currently uses Mistral-7B-Instruct for reliability. You can modify the model in `app/api/analyze/route.ts`.
-- **Response Time**: AI analysis typically takes 5-15 seconds depending on resume length and API load.
-- **Fallback**: If AI parsing fails, the system provides a basic analysis to ensure functionality.
+- API limits and latency depend on your Groq plan and model.
+- If AI parsing fails, the server returns a structured error.
 
 ## Troubleshooting
 
-**"Hugging Face API token not configured" error:**
+**"GROQ_API_KEY is not defined" error:**
 
-- Make sure you've created `.env.local` file
-- Verify the token is correctly set
-- Restart the development server after adding the token
+- Ensure `.env.local` exists and contains `GROQ_API_KEY`.
+- Restart the development server after updating the file.
 
 **Analysis takes too long:**
 
-- Hugging Face free tier can be slow during peak times
-- Consider using a paid tier for faster responses
-- Check your internet connection
+- Try a smaller resume or a faster model.
 
 **Styling issues:**
 
-- Clear browser cache
-- Make sure both `globals.css` and `resume-analyzer.css` are loaded
-- Check browser console for errors
+- Clear browser cache.
+- Ensure `app/globals.css` is loaded.
 
 ## License
 
@@ -159,5 +135,5 @@ This project is for educational and demonstration purposes.
 ## Credits
 
 - UI/UX inspired by modern design principles
-- AI powered by Hugging Face
+- AI powered by Groq
 - Built with Next.js and React

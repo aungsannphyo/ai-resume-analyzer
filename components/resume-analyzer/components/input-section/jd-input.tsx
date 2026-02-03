@@ -28,6 +28,7 @@ const JDInput = ({ jdText, setJdText }: JDInputProps) => {
           {jdText.length.toLocaleString()} characters
         </span>
         <button
+          type="button"
           className="px-4 cursor-pointer py-2 bg-transparent border border-slate-200 rounded-lg text-slate-500 text-sm hover:bg-red-500/10 hover:border-red-500/20 hover:text-red-600 transition-all font-medium"
           onClick={() => setJdText("")}
         >

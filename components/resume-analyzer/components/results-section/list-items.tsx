@@ -53,7 +53,7 @@ const ListItems = ({ title, icon: Icon, items, variant }: ListItemsProps) => {
         {items.map((item, idx) => (
           <li
             key={idx}
-            className={`p-4 ${colors.bg} border-l-3 ${colors.border} rounded-lg ${colors.text} font-medium`}
+            className={`p-4 ${colors.bg} border-l-4 ${colors.border} rounded-lg ${colors.text} font-medium`}
           >
             {item}
           </li>

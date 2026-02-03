@@ -8,6 +8,14 @@ interface ResumeUploadProps {
 
 const ResumeUpload = ({ resumeFile, setResumeFile }: ResumeUploadProps) => {
   const [dragActive, setDragActive] = useState(false);
+  const [fileError, setFileError] = useState<string | null>(null);
+
+  const isPdfFile = (file: File) => {
+    return (
+      file.type === "application/pdf" ||
+      file.name.toLowerCase().endsWith(".pdf")
+    );
+  };
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -26,10 +34,11 @@ const ResumeUpload = ({ resumeFile, setResumeFile }: ResumeUploadProps) => {
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
-      if (file.type === "application/pdf") {
+      if (isPdfFile(file)) {
+        setFileError(null);
         setResumeFile(file);
       } else {
-        alert("Please upload a PDF file only");
+        setFileError("Please upload a PDF file only.");
       }
     }
   };
@@ -37,17 +46,21 @@ const ResumeUpload = ({ resumeFile, setResumeFile }: ResumeUploadProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      if (file.type === "application/pdf") {
+      if (isPdfFile(file)) {
+        setFileError(null);
         setResumeFile(file);
       } else {
-        alert("Please upload a PDF file only");
+        setFileError("Please upload a PDF file only.");
       }
     }
   };
 
   return (
     <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-200/50 hover:border-[#5cbe4c]/30 transition-all duration-300">
-      <label className="flex items-center gap-2 font-semibold text-slate-900 mb-4">
+      <label
+        htmlFor="resumeFile"
+        className="flex items-center gap-2 font-semibold text-slate-900 mb-4"
+      >
         <Upload className="w-5 h-5 text-[#5cbe4c]" />
         Resume Upload (PDF Only)
       </label>
@@ -91,12 +104,19 @@ const ResumeUpload = ({ resumeFile, setResumeFile }: ResumeUploadProps) => {
             </div>
           </div>
           <button
-            onClick={() => setResumeFile(null)}
+            onClick={() => {
+              setResumeFile(null);
+              setFileError(null);
+            }}
             className="p-2 hover:bg-red-500/10 rounded-lg transition-all group"
           >
             <X className="w-5 h-5 text-slate-400 group-hover:text-red-600" />
           </button>
         </div>
+      )}
+
+      {fileError && (
+        <p className="mt-3 text-sm text-red-600 font-medium">{fileError}</p>
       )}
     </div>
   );

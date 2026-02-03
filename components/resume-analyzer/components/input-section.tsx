@@ -1,9 +1,9 @@
-import { AlertTriangle } from "lucide-react";
-import JDInput from "./jd-input";
-import ResumeUpload from "./resume-upload";
-import AnalysisProgress from "./analysis-progress";
-import AnalyzeButton from "./analyze-button";
-import DomainSelector from "./domain-selector";
+import ErrorBanner from "../../error-banner";
+import JDInput from "./input-section/jd-input";
+import ResumeUpload from "./input-section/resume-upload";
+import AnalysisProgress from "./input-section/analysis-progress";
+import AnalyzeButton from "./input-section/analyze-button";
+import DomainSelector from "./input-section/domain-selector";
 import { AnalysisDomain, AnalysisStep } from "@/types/analysis";
 
 interface InputSectionProps {
@@ -15,6 +15,7 @@ interface InputSectionProps {
   setDomain: (domain: AnalysisDomain) => void;
   isAnalyzing: boolean;
   analysisStep: AnalysisStep;
+  extractionProgress: number;
   error: string | null;
   onAnalyze: () => void;
 }
@@ -28,6 +29,7 @@ const InputSection = ({
   setDomain,
   isAnalyzing,
   analysisStep,
+  extractionProgress,
   error,
   onAnalyze,
 }: InputSectionProps) => {
@@ -43,11 +45,7 @@ const InputSection = ({
         </p>
       </div>
 
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-red-600 mb-6 flex items-center gap-3">
-          <AlertTriangle className="w-5 h-5" /> {error}
-        </div>
-      )}
+      {error && <ErrorBanner message={error} className="mb-6" />}
 
       <DomainSelector selectedDomain={domain} onSelect={setDomain} />
 
@@ -56,7 +54,12 @@ const InputSection = ({
         <ResumeUpload resumeFile={resumeFile} setResumeFile={setResumeFile} />
       </div>
 
-      {isAnalyzing && <AnalysisProgress analysisStep={analysisStep} />}
+      {isAnalyzing && (
+        <AnalysisProgress
+          analysisStep={analysisStep}
+          extractionProgress={extractionProgress}
+        />
+      )}
 
       <AnalyzeButton
         isAnalyzing={isAnalyzing}

@@ -1,25 +1,13 @@
-import { techPrompt } from "./domains/tech";
-import { hrPrompt } from "./domains/hr";
-import { riskPrompt } from "./domains/risk";
-import { financePrompt } from "./domains/finance";
-import { DomainPromptData } from "./domains/types";
-
 import { AnalysisDomain } from "@/types/analysis";
 import { getAnalysisSchema } from "./schema/analyzeSchema";
-
-export const domainPrompts: Record<string, DomainPromptData> = {
-  [AnalysisDomain.TECHNOLOGY]: techPrompt,
-  [AnalysisDomain.HR]: hrPrompt,
-  [AnalysisDomain.RISK_AND_COMPLIANCE]: riskPrompt,
-  [AnalysisDomain.FINANCE_AND_ACCOUNTING]: financePrompt,
-};
+import { getDomainPrompt } from "./domain-prompts";
 
 export const getAnalyzePrompt = (
   jdText: string,
   resumeText: string,
   domain: AnalysisDomain = AnalysisDomain.TECHNOLOGY,
 ): string => {
-  const selectedData = domainPrompts[domain] || techPrompt;
+  const selectedData = getDomainPrompt(domain);
   const jsonSchema = getAnalysisSchema(
     domain,
     selectedData.competencies,

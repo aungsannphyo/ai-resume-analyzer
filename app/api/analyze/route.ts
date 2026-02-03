@@ -1,11 +1,77 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { AnalysisResult } from "@/types/analysis";
+import { AnalysisDomain, type AnalysisResult } from "@/types/analysis";
 import { getAnalyzePrompt } from "@/prompts/analyzePrompt";
 import { groq } from "@/utils/groq_config";
+import { normalizeDomain } from "@/lib/domain-registry";
+
+const isNonEmptyString = (value: unknown): value is string =>
+  typeof value === "string" && value.trim().length > 0;
+
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every(isNonEmptyString);
+
+const isDecisionStatus = (
+  value: unknown,
+): value is AnalysisResult["decision"]["status"] =>
+  value === "Proceed" || value === "Consider" || value === "Reject";
+
+const isAnalysisResult = (value: unknown): value is AnalysisResult => {
+  if (!value || typeof value !== "object") return false;
+  const v = value as AnalysisResult;
+
+  const hasValidScores =
+    typeof v.overallScore === "number" &&
+    Number.isFinite(v.overallScore) &&
+    v.overallScore >= 0 &&
+    v.overallScore <= 100 &&
+    Array.isArray(v.detailedScores) &&
+    v.detailedScores.every(
+      (score) =>
+        score &&
+        typeof score.category === "string" &&
+        typeof score.score === "number" &&
+        Number.isFinite(score.score),
+    );
+
+  const hasValidCompetencies =
+    Array.isArray(v.competencies) &&
+    v.competencies.every(
+      (comp) =>
+        comp &&
+        isNonEmptyString(comp.name) &&
+        isNonEmptyString(comp.rating) &&
+        isNonEmptyString(comp.evidence),
+    );
+
+  const hasValidDecision =
+    v.decision &&
+    isDecisionStatus(v.decision.status) &&
+    isNonEmptyString(v.decision.reasoning);
+
+  const hasValidInterviewFocus =
+    v.interviewFocus &&
+    isStringArray(v.interviewFocus.technical) &&
+    isStringArray(v.interviewFocus.behavioral) &&
+    isStringArray(v.interviewFocus.tasks);
+
+  return (
+    isNonEmptyString(v.candidateName) &&
+    isNonEmptyString(v.designation) &&
+    isNonEmptyString(v.assessment) &&
+    hasValidScores &&
+    hasValidCompetencies &&
+    isStringArray(v.strengths) &&
+    isStringArray(v.gaps) &&
+    isStringArray(v.redFlags) &&
+    hasValidDecision &&
+    hasValidInterviewFocus
+  );
+};
 
 export async function POST(request: NextRequest) {
   try {
     const { jdText, resumeText, domain } = await request.json();
+    const safeDomain = normalizeDomain(domain, AnalysisDomain.TECHNOLOGY);
 
     if (!resumeText || resumeText.trim().length === 0) {
       return NextResponse.json(
@@ -22,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Construct the analysis prompt using JD as context
-    const prompt = getAnalyzePrompt(jdText, resumeText, domain);
+    const prompt = getAnalyzePrompt(jdText, resumeText, safeDomain);
 
     // Call Groq API
     const response = await groq.chat.completions.create({
@@ -42,14 +108,16 @@ export async function POST(request: NextRequest) {
 
     try {
       const generatedText = response.choices[0].message.content;
-      const jsonMatch = generatedText?.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
+      const jsonStart = generatedText?.indexOf("{") ?? -1;
+      const jsonEnd = generatedText?.lastIndexOf("}") ?? -1;
+      if (jsonStart === -1 || jsonEnd === -1 || jsonEnd <= jsonStart) {
         throw new Error("No JSON found in AI response");
       }
 
-      analysisResult = JSON.parse(jsonMatch[0]);
+      const jsonString = generatedText!.slice(jsonStart, jsonEnd + 1);
+      analysisResult = JSON.parse(jsonString);
 
-      if (!analysisResult.overallScore || !analysisResult.competencies) {
+      if (!isAnalysisResult(analysisResult)) {
         throw new Error("Invalid analysis structure");
       }
     } catch (parseError) {

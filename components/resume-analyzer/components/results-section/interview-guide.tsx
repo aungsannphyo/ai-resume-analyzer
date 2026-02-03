@@ -36,11 +36,7 @@ const InterviewGuide = ({
           icon={MessageSquare}
           items={behavioral}
         />
-        <FocusSection
-          title="Practical Case Tasks"
-          icon={Target}
-          items={tasks}
-        />
+        <FocusSection title="Practical Case Tasks" icon={Target} items={tasks} />
       </div>
     </div>
   );
@@ -61,7 +57,7 @@ const FocusSection = ({ title, icon: Icon, items }: FocusSectionProps) => (
     <ul className="space-y-3">
       {items.map((item, i) => (
         <li key={i} className="text-slate-300 text-sm flex gap-2">
-          <span className="text-[#5cbe4c] font-bold">•</span>
+          <span className="text-[#5cbe4c] font-bold">-</span>
           {item}
         </li>
       ))}
