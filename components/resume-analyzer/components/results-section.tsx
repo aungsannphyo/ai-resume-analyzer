@@ -1,5 +1,6 @@
 import type { AnalysisResult } from "@/types/analysis";
 import { CheckCircle2, ShieldAlert } from "lucide-react";
+import { memo } from "react";
 import ErrorBanner from "../../error-banner";
 
 // Sub-components
@@ -20,80 +21,84 @@ interface ResultsSectionProps {
   exportError?: string | null;
 }
 
-const ResultsSection = ({
-  analysisResult,
-  onExport,
-  onNewAnalysis,
-  isExporting,
-  exportError,
-}: ResultsSectionProps) => {
-  return (
-    <section className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/50 mb-8">
-      {exportError && <ErrorBanner message={exportError} className="mb-6" />}
+const ResultsSection = memo(
+  ({
+    analysisResult,
+    onExport,
+    onNewAnalysis,
+    isExporting,
+    exportError,
+  }: ResultsSectionProps) => {
+    return (
+      <section className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/50 mb-8">
+        {exportError && <ErrorBanner message={exportError} className="mb-6" />}
 
-      {/* Top Actions */}
-      <ActionBar
-        onExport={onExport}
-        onNewAnalysis={onNewAnalysis}
-        isExporting={isExporting}
-      />
+        {/* Top Actions */}
+        <ActionBar
+          onExport={onExport}
+          onNewAnalysis={onNewAnalysis}
+          isExporting={isExporting}
+        />
 
-      {/* Profile & Decision Info */}
-      <CandidateHeader
-        name={analysisResult.candidateName}
-        designation={analysisResult.designation}
-      />
+        {/* Profile & Decision Info */}
+        <CandidateHeader
+          name={analysisResult.candidateName}
+          designation={analysisResult.designation}
+        />
 
-      <DecisionCard
-        status={analysisResult.decision.status}
-        reasoning={analysisResult.decision.reasoning}
-      />
+        <DecisionCard
+          status={analysisResult.decision.status}
+          reasoning={analysisResult.decision.reasoning}
+        />
 
-      {/* Scores & Visualization */}
-      <ScoringOverview
-        overallScore={analysisResult.overallScore}
-        detailedScores={analysisResult.detailedScores}
-      />
+        {/* Scores & Visualization */}
+        <ScoringOverview
+          overallScore={analysisResult.overallScore}
+          detailedScores={analysisResult.detailedScores}
+        />
 
-      {/* Qualitative Analysis */}
-      <div className="space-y-6">
-        <AssessmentCard assessment={analysisResult.assessment} />
+        {/* Qualitative Analysis */}
+        <div className="space-y-6">
+          <AssessmentCard assessment={analysisResult.assessment} />
 
-        <CompetencyList competencies={analysisResult.competencies} />
+          <CompetencyList competencies={analysisResult.competencies} />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <ListItems
-            title="Key Strengths"
-            icon={CheckCircle2}
-            items={analysisResult.strengths}
-            variant="strength"
-          />
-
-          {analysisResult.redFlags && analysisResult.redFlags.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ListItems
-              title="Red Flags"
+              title="Key Strengths"
+              icon={CheckCircle2}
+              items={analysisResult.strengths}
+              variant="strength"
+            />
+
+            {analysisResult.redFlags && analysisResult.redFlags.length > 0 && (
+              <ListItems
+                title="Red Flags"
+                icon={ShieldAlert}
+                items={analysisResult.redFlags}
+                variant="red-flag"
+              />
+            )}
+          </div>
+
+          {/* Gaps/Questions can still use ListItems if needed, currently gaps is empty or used for strengths/flags */}
+          {analysisResult.gaps && analysisResult.gaps.length > 0 && (
+            <ListItems
+              title="Potential Gaps"
               icon={ShieldAlert}
-              items={analysisResult.redFlags}
-              variant="red-flag"
+              items={analysisResult.gaps}
+              variant="gap"
             />
           )}
+
+          {/* Interview Strategic Focus */}
+          <InterviewGuide {...analysisResult.interviewFocus} />
         </div>
+      </section>
+    );
+  },
+);
 
-        {/* Gaps/Questions can still use ListItems if needed, currently gaps is empty or used for strengths/flags */}
-        {analysisResult.gaps && analysisResult.gaps.length > 0 && (
-          <ListItems
-            title="Potential Gaps"
-            icon={ShieldAlert}
-            items={analysisResult.gaps}
-            variant="gap"
-          />
-        )}
-
-        {/* Interview Strategic Focus */}
-        <InterviewGuide {...analysisResult.interviewFocus} />
-      </div>
-    </section>
-  );
-};
+ResultsSection.displayName = "ResultsSection";
 
 export default ResultsSection;

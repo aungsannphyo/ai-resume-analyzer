@@ -7,8 +7,9 @@ import InputSection from "@/components/resume-analyzer/components/input-section"
 import ResultsSection from "@/components/resume-analyzer/components/results-section";
 import Footer from "@/components/resume-analyzer/components/footer";
 import { usePdfExport } from "@/hooks/usePdfExport";
+import { memo, useCallback } from "react";
 
-const ResumeAnalyzerClient = () => {
+const ResumeAnalyzerClient = memo(() => {
   const {
     jdText,
     setJdText,
@@ -30,7 +31,7 @@ const ResumeAnalyzerClient = () => {
   const { mutate: analyze, isPending: isAnalyzing } = useAnalyzeResume();
   const { exportToPdf, isExporting } = usePdfExport();
 
-  const handleAnalyze = () => {
+  const handleAnalyze = useCallback(() => {
     if (!jdText.trim()) {
       setError("Please enter a job description.");
       return;
@@ -42,9 +43,9 @@ const ResumeAnalyzerClient = () => {
     setError(null);
     setExportError(null);
     analyze({ jdText, resumeFile, domain });
-  };
+  }, [jdText, resumeFile, domain, setError, setExportError, analyze]);
 
-  const handleExport = async () => {
+  const handleExport = useCallback(async () => {
     if (!analysisResult) return;
     try {
       setExportError(null);
@@ -52,12 +53,12 @@ const ResumeAnalyzerClient = () => {
     } catch (error) {
       setExportError("Failed to generate PDF report. Please try again.");
     }
-  };
+  }, [analysisResult, setExportError, exportToPdf]);
 
-  const handleNewAnalysis = () => {
+  const handleNewAnalysis = useCallback(() => {
     setExportError(null);
     resetAnalysis();
-  };
+  }, [setExportError, resetAnalysis]);
 
   return (
     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -94,6 +95,8 @@ const ResumeAnalyzerClient = () => {
       <Footer />
     </div>
   );
-};
+});
+
+ResumeAnalyzerClient.displayName = "ResumeAnalyzerClient";
 
 export default ResumeAnalyzerClient;

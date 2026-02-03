@@ -1,5 +1,6 @@
 import type { Competency } from "@/types/analysis";
 import { Target } from "lucide-react";
+import { memo } from "react";
 
 interface CompetencyListProps {
   competencies: Competency[];
@@ -18,7 +19,7 @@ const getRatingColor = (rating: string) => {
   }
 };
 
-const CompetencyList = ({ competencies }: CompetencyListProps) => {
+const CompetencyList = memo(({ competencies }: CompetencyListProps) => {
   return (
     <div className="bg-slate-50/50 rounded-2xl p-6 border border-slate-200/50 animate-slide-in">
       <h3 className="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6">
@@ -51,6 +52,8 @@ const CompetencyList = ({ competencies }: CompetencyListProps) => {
       </div>
     </div>
   );
-};
+});
+
+CompetencyList.displayName = "CompetencyList";
 
 export default CompetencyList;
