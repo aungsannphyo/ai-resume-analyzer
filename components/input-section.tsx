@@ -1,0 +1,70 @@
+import { AlertTriangle } from "lucide-react";
+import JDInput from "./jd-input";
+import ResumeUpload from "./resume-upload";
+import AnalysisProgress from "./analysis-progress";
+import AnalyzeButton from "./analyze-button";
+import DomainSelector from "./domain-selector";
+import { AnalysisDomain, AnalysisStep } from "@/types/analysis";
+
+interface InputSectionProps {
+  jdText: string;
+  setJdText: (value: string) => void;
+  resumeFile: File | null;
+  setResumeFile: (file: File | null) => void;
+  domain: AnalysisDomain;
+  setDomain: (domain: AnalysisDomain) => void;
+  isAnalyzing: boolean;
+  analysisStep: AnalysisStep;
+  error: string | null;
+  onAnalyze: () => void;
+}
+
+const InputSection = ({
+  jdText,
+  setJdText,
+  resumeFile,
+  setResumeFile,
+  domain,
+  setDomain,
+  isAnalyzing,
+  analysisStep,
+  error,
+  onAnalyze,
+}: InputSectionProps) => {
+  return (
+    <section className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/50 mb-8">
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-slate-900 mb-2">
+          Job Description & Resume
+        </h2>
+        <p className="text-slate-500 font-medium">
+          Enter the job description and upload the candidate&apos;s resume (PDF
+          only)
+        </p>
+      </div>
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-red-600 mb-6 flex items-center gap-3">
+          <AlertTriangle className="w-5 h-5" /> {error}
+        </div>
+      )}
+
+      <DomainSelector selectedDomain={domain} onSelect={setDomain} />
+
+      <div className="grid grid-cols-1 gap-6 mb-8">
+        <JDInput jdText={jdText} setJdText={setJdText} />
+        <ResumeUpload resumeFile={resumeFile} setResumeFile={setResumeFile} />
+      </div>
+
+      {isAnalyzing && <AnalysisProgress analysisStep={analysisStep} />}
+
+      <AnalyzeButton
+        isAnalyzing={isAnalyzing}
+        analysisStep={analysisStep}
+        onClick={onAnalyze}
+      />
+    </section>
+  );
+};
+
+export default InputSection;

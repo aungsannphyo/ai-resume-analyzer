@@ -1,36 +1,163 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI-Powered Resume Analyzer
+
+An intelligent resume analysis tool powered by Hugging Face AI that evaluates Project Manager candidates with comprehensive competency breakdowns and scoring.
+
+## Features
+
+- 🤖 **AI-Powered Analysis** - Uses Hugging Face's Mistral-7B model for intelligent resume evaluation
+- 📊 **Comprehensive Scoring** - Overall score (0-100) with detailed competency breakdown
+- 🎯 **7 Key Competencies** - Evaluates Planning, Agile/Scrum, Stakeholder Management, Risk Management, Budget Management, Leadership, and PM Tools
+- 💪 **Strengths & Gaps** - Identifies top 3 strengths and potential areas for improvement
+- 📥 **Export Reports** - Download analysis as Markdown files
+- 🎨 **Beautiful UI** - Modern dark theme with gradients and smooth animations
+- 📱 **Responsive Design** - Works perfectly on desktop, tablet, and mobile
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18+ installed
+- A Hugging Face account (free)
+
+### Installation
+
+1. **Get your Hugging Face API Token**
+   - Visit [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+   - Create a new token (read access is sufficient)
+   - Copy the token
+
+2. **Configure Environment Variables**
+   - Open `.env.local` in the project root
+   - Replace `your_huggingface_token_here` with your actual token:
+
+   ```
+   HUGGINGFACE_API_TOKEN=hf_your_actual_token_here
+   ```
+
+3. **Start the Development Server**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Open the Application**
+   - Navigate to [http://localhost:3000](http://localhost:3000)
+   - The AI Resume Analyzer is ready to use!
+
+## How to Use
+
+1. **Enter Keywords (Optional)**
+   - Add specific keywords you want the AI to focus on
+   - Example: "Agile, Scrum, Budget Management, Stakeholder Communication"
+   - Separate multiple keywords with commas
+
+2. **Paste Resume Text**
+   - Copy and paste the candidate's resume into the text area
+   - Include work experience, skills, certifications, and achievements
+
+3. **Analyze**
+   - Click "Analyze Resume" button
+   - Wait for the AI to process (usually 5-15 seconds)
+
+4. **Review Results**
+   - Overall PM Score (0-100)
+   - Detailed assessment
+   - Competency breakdown with ratings
+   - Key strengths
+   - Potential gaps with interview questions
+
+5. **Export (Optional)**
+   - Click "Export Report" to download as Markdown
+   - Use for documentation or sharing with team
+
+## Technology Stack
+
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **AI**: Hugging Face Inference API (Mistral-7B-Instruct)
+- **Styling**: Custom CSS with modern design system
+- **API**: Next.js API Routes
+
+## Project Structure
+
+```
+my-app/
+├── app/
+│   ├── api/
+│   │   └── analyze/
+│   │       └── route.ts          # AI analysis API endpoint
+│   ├── globals.css               # Global styles & design system
+│   ├── resume-analyzer.css       # Component-specific styles
+│   ├── page.tsx                  # Main resume analyzer component
+│   └── layout.tsx                # Root layout
+├── types/
+│   └── analysis.ts               # TypeScript type definitions
+├── .env.local                    # Environment variables (API token)
+└── package.json                  # Dependencies
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Endpoint
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### POST `/api/analyze`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Analyzes a resume using AI.
 
-## Learn More
+**Request Body:**
 
-To learn more about Next.js, take a look at the following resources:
+```json
+{
+  "resumeText": "string (required)",
+  "keywords": "string (optional)"
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Response:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```json
+{
+  "success": true,
+  "data": {
+    "overallScore": 75,
+    "assessment": "...",
+    "competencies": [...],
+    "strengths": [...],
+    "gaps": [...]
+  }
+}
+```
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **API Rate Limits**: Hugging Face free tier has rate limits. For production use, consider upgrading.
+- **Model Selection**: Currently uses Mistral-7B-Instruct for reliability. You can modify the model in `app/api/analyze/route.ts`.
+- **Response Time**: AI analysis typically takes 5-15 seconds depending on resume length and API load.
+- **Fallback**: If AI parsing fails, the system provides a basic analysis to ensure functionality.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Troubleshooting
+
+**"Hugging Face API token not configured" error:**
+
+- Make sure you've created `.env.local` file
+- Verify the token is correctly set
+- Restart the development server after adding the token
+
+**Analysis takes too long:**
+
+- Hugging Face free tier can be slow during peak times
+- Consider using a paid tier for faster responses
+- Check your internet connection
+
+**Styling issues:**
+
+- Clear browser cache
+- Make sure both `globals.css` and `resume-analyzer.css` are loaded
+- Check browser console for errors
+
+## License
+
+This project is for educational and demonstration purposes.
+
+## Credits
+
+- UI/UX inspired by modern design principles
+- AI powered by Hugging Face
+- Built with Next.js and React
