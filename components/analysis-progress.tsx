@@ -28,7 +28,7 @@ const AnalysisProgress = ({ analysisStep }: AnalysisProgressProps) => {
       <p className="text-center text-xs text-slate-400 mt-2 italic animate-pulse">
         {analysisStep === AnalysisStep.EXTRACTING
           ? "Reading PDF content locally..."
-          : "GLM-4.6 is evaluating experience..."}
+          : "Groq AI is evaluating experience..."}
       </p>
     </div>
   );

@@ -10,7 +10,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "AI Resume Analyzer - Powered by GLM-4.6",
+  title: "AI Resume Analyzer - Powered by Groq",
   description:
     "Intelligent resume analysis tool for evaluating Project Manager candidates with AI-powered competency breakdowns and scoring.",
 };

@@ -13,7 +13,7 @@ const Header = () => {
               AI Resume Analyzer
             </h1>
             <p className="text-sm text-slate-500 font-medium">
-              Powered by GLM-4.6
+              Powered by Groq Llama 3
             </p>
           </div>
         </div>

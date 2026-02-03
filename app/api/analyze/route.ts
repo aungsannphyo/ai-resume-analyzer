@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { AnalysisResult } from "@/types/analysis";
 import { getAnalyzePrompt } from "@/prompts/analyzePrompt";
-import { hf, HF_CONFIG } from "@/utils/huggingface_config";
+import { groq } from "@/utils/groq_config";
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,17 +24,17 @@ export async function POST(request: NextRequest) {
     // Construct the analysis prompt using JD as context
     const prompt = getAnalyzePrompt(jdText, resumeText, domain);
 
-    // Call Hugging Face API
-    const response = await hf.chatCompletion({
-      model: HF_CONFIG.model,
+    // Call Groq API
+    const response = await groq.chat.completions.create({
+      model: process.env.GROQ_MODEL || "llama-3.1-8b-instant",
       messages: [
         {
           role: "user",
           content: prompt,
         },
       ],
-      max_tokens: HF_CONFIG.max_tokens,
-      temperature: HF_CONFIG.temperature,
+      max_tokens: 2000,
+      temperature: 0.3,
     });
 
     // Parse the AI response
