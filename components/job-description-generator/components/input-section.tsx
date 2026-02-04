@@ -98,7 +98,15 @@ const InputSection = memo(
                 label="Experience Level"
                 value={input.experienceLevel}
                 options={experienceOptions}
-                onChange={(value) => onUpdate({ experienceLevel: value })}
+                onChange={(value) =>
+                  onUpdate({
+                    experienceLevel: value as
+                      | "Intern"
+                      | "Junior"
+                      | "Mid"
+                      | "Senior",
+                  })
+                }
                 required
                 error={
                   error && !input.experienceLevel
@@ -111,7 +119,14 @@ const InputSection = memo(
                 label="Employment Type"
                 value={input.employmentType}
                 options={employmentTypeOptions}
-                onChange={(value) => onUpdate({ employmentType: value })}
+                onChange={(value) =>
+                  onUpdate({
+                    employmentType: value as
+                      | "Full-time"
+                      | "Contract"
+                      | "Internship",
+                  })
+                }
                 required
                 error={
                   error && !input.employmentType
@@ -124,7 +139,11 @@ const InputSection = memo(
                 label="Work Mode"
                 value={input.workMode}
                 options={workModeOptions}
-                onChange={(value) => onUpdate({ workMode: value })}
+                onChange={(value) =>
+                  onUpdate({
+                    workMode: value as "Onsite" | "Hybrid" | "Remote",
+                  })
+                }
                 required
                 error={
                   error && !input.workMode ? "Work mode is required" : undefined
@@ -168,7 +187,11 @@ const InputSection = memo(
                 label="Company Size"
                 value={input.companySize}
                 options={companySizeOptions}
-                onChange={(value) => onUpdate({ companySize: value })}
+                onChange={(value) =>
+                  onUpdate({
+                    companySize: value as "Startup" | "SME" | "Enterprise",
+                  })
+                }
                 required
                 error={
                   error && !input.companySize
@@ -211,7 +234,7 @@ const InputSection = memo(
                 options={toneOptions}
                 onChange={(value) =>
                   onUpdate({
-                    tone: value as JobDescriptionInput["tone"],
+                    tone: value as "professional" | "startup" | "enterprise",
                   })
                 }
               />
