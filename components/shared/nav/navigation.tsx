@@ -63,7 +63,11 @@ const Navigation = () => {
           <div className="flex w-full flex-col justify-start gap-2 sm:w-auto sm:flex-row sm:justify-end sm:gap-3">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href;
+              // Make Resume Analyzer active on both / and /resume-analyzer
+              const isActive =
+                (item.href === "/resume-analyzer" &&
+                  (pathname === "/" || pathname === "/resume-analyzer")) ||
+                (item.href !== "/resume-analyzer" && pathname === item.href);
 
               return (
                 <Link
