@@ -2,11 +2,11 @@
 
 import { useAnalysisStore } from "@/store/useAnalysisStore";
 import { useAnalyzeResume } from "@/hooks/useAnalyzeResume";
-import Header from "@/components/resume-analyzer/components/header";
+import Navigation from "@/components/shared/nav/navigation";
 import InputSection from "@/components/resume-analyzer/components/input-section";
 import ResultsSection from "@/components/resume-analyzer/components/results-section";
 import Footer from "@/components/resume-analyzer/components/footer";
-import { usePdfExport } from "@/hooks/usePdfExport";
+import { usePdfExport } from "@/hooks/useAnalyzeResumePdfExport";
 import { memo, useCallback } from "react";
 
 const ResumeAnalyzerClient = memo(() => {
@@ -62,7 +62,7 @@ const ResumeAnalyzerClient = memo(() => {
 
   return (
     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <Header />
+      <Navigation />
 
       <main className="min-h-[60vh]">
         {!showResults && (

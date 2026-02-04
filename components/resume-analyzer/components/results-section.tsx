@@ -1,7 +1,7 @@
 import type { AnalysisResult } from "@/types/analysis";
 import { CheckCircle2, ShieldAlert } from "lucide-react";
 import { memo } from "react";
-import ErrorBanner from "../../error-banner";
+import ErrorBanner from "../../shared/error-banner";
 
 // Sub-components
 import ActionBar from "./results-section/action-bar";

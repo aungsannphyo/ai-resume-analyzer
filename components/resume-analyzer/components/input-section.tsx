@@ -1,4 +1,4 @@
-import ErrorBanner from "../../error-banner";
+import ErrorBanner from "../../shared/error-banner";
 import JDInput from "./input-section/jd-input";
 import ResumeUpload from "./input-section/resume-upload";
 import AnalysisProgress from "./input-section/analysis-progress";
