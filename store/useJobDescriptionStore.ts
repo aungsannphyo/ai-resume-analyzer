@@ -3,11 +3,11 @@ import type { JobDescriptionInput } from "@/types/job-description";
 
 const initialInput: JobDescriptionInput = {
   jobTitle: "",
-  experienceLevel: "",
-  employmentType: "",
-  workMode: "",
+  experienceLevel: "Intern",
+  employmentType: "Full-time",
+  workMode: "Onsite",
   industry: "",
-  companySize: "",
+  companySize: "Startup",
   responsibilities: [],
   requiredSkills: [],
   niceToHaveSkills: [],
