@@ -327,26 +327,27 @@ const IntelligenceGrid = ({
 
 const CompetencyItem = ({ comp }: { comp: Competency }) => (
   <View style={styles.competencyBox}>
-    <View
+    <Text
       style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 4,
+        fontSize: 9,
+        fontWeight: 700,
+        color: "#0f172a",
+        marginBottom: 2,
       }}
     >
-      <Text style={{ fontSize: 9, fontWeight: 700, color: "#0f172a" }}>
-        {comp.name}
-      </Text>
-      <Text
-        style={{
-          fontSize: 7.5,
-          fontWeight: 700,
-          color: getRatingColor(comp.rating),
-        }}
-      >
-        {comp.rating}
-      </Text>
-    </View>
+      {comp.name}
+    </Text>
+    <Text
+      style={{
+        fontSize: 7.5,
+        fontWeight: 700,
+        color: getRatingColor(comp.rating),
+        marginBottom: 4,
+        textTransform: "uppercase",
+      }}
+    >
+      {comp.rating}
+    </Text>
     <Text style={[styles.bulletText, { fontSize: 8 }]}>{comp.evidence}</Text>
   </View>
 );

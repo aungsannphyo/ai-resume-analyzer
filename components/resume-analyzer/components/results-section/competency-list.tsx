@@ -32,17 +32,19 @@ const CompetencyList = memo(({ competencies }: CompetencyListProps) => {
             key={idx}
             className="bg-white p-5 rounded-xl border-l-4 border-[#5cbe4c] hover:translate-x-1 hover:shadow-md transition-all shadow-sm"
           >
-            <div className="flex flex-wrap justify-between items-center gap-2 mb-3">
-              <span className="font-semibold text-slate-900 text-lg">
+            <div className="mb-3">
+              <div className="font-semibold text-slate-900 text-lg mb-1">
                 {comp.name}
-              </span>
-              <span
-                className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider ${getRatingColor(
-                  comp.rating,
-                )}`}
-              >
-                {comp.rating}
-              </span>
+              </div>
+              <div>
+                <span
+                  className={`px-3 py-1 rounded-lg text-[10px] font-semibold uppercase tracking-wider ${getRatingColor(
+                    comp.rating,
+                  )}`}
+                >
+                  {comp.rating}
+                </span>
+              </div>
             </div>
             <div className="text-slate-600 text-sm leading-relaxed italic font-medium">
               {comp.evidence}
