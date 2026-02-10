@@ -67,34 +67,36 @@ const JobDescGeneratorClient = memo(() => {
   }, [generatedDescription, setError, exportToPdf]);
 
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <Navigation />
+    <div className="relative min-h-screen bg-linear-to-br from-gray-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto">
+        <Navigation />
 
-      <main className="min-h-[60vh]">
-        {!showResults && (
-          <InputSection
-            input={input}
-            error={error}
-            onUpdate={updateInput}
-            onUpdateList={updateListField}
-            onUpdateTechStack={updateTechStack}
-            onGenerate={handleGenerate}
-            isGenerating={isGenerating}
-          />
-        )}
+        <main className="min-h-[60vh]">
+          {!showResults && (
+            <InputSection
+              input={input}
+              error={error}
+              onUpdate={updateInput}
+              onUpdateList={updateListField}
+              onUpdateTechStack={updateTechStack}
+              onGenerate={handleGenerate}
+              isGenerating={isGenerating}
+            />
+          )}
 
-        {showResults && generatedDescription && (
-          <ResultsSection
-            jobDescription={generatedDescription}
-            onCopy={handleCopy}
-            onReset={handleReset}
-            onExport={handleExport}
-            isExporting={isExporting}
-          />
-        )}
-      </main>
+          {showResults && generatedDescription && (
+            <ResultsSection
+              jobDescription={generatedDescription}
+              onCopy={handleCopy}
+              onReset={handleReset}
+              onExport={handleExport}
+              isExporting={isExporting}
+            />
+          )}
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 });

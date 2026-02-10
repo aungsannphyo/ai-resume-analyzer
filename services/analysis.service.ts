@@ -14,9 +14,17 @@ interface AnalyzeResponse {
 
 export const AnalysisService = {
   analyzeResume: async (payload: AnalyzePayload): Promise<AnalysisResult> => {
+    const modelType =
+      typeof window !== "undefined"
+        ? localStorage.getItem("ai-model-type")
+        : null;
+
     const response = await fetch("/api/analyze", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(modelType && { "x-model-type": modelType }),
+      },
       body: JSON.stringify(payload),
     });
 

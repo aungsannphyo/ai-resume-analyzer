@@ -30,7 +30,7 @@ const ResultsSection = memo(
     exportError,
   }: ResultsSectionProps) => {
     return (
-      <section className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/50 mb-8">
+      <section className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 sm:p-10 shadow-xl border border-white/20 mb-8">
         {exportError && <ErrorBanner message={exportError} className="mb-6" />}
 
         {/* Top Actions */}

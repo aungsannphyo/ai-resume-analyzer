@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { JobDescriptionSchema } from "@/schemas/job-description";
 import { getJobDescriptionPrompt } from "@/prompts/job-description-prompt";
-import { groq } from "@/utils/groq_config";
+import { getAIModel } from "@/lib/models/ai-model";
 import { LLM_CONFIG } from "@/constants/llm";
 import { rateLimit } from "@/lib/rate-limit";
 import { generateCacheKey, getCache, setCache } from "@/lib/cache";
@@ -66,15 +66,15 @@ export async function POST(request: NextRequest) {
     // Generate prompt
     const prompt = getJobDescriptionPrompt(validatedInput);
 
+    // Get the AI model instance
+    const modelType = request.headers.get("x-model-type") || undefined;
+    const aiModel = getAIModel(modelType);
+
     // Create response (non-streaming for now, can be upgraded later)
-    const response = await groq.chat.completions.create({
-      model: LLM_CONFIG.MODEL,
-      messages: [{ role: "user", content: prompt }],
+    const generatedText = await aiModel.generateResponse(prompt, {
       max_tokens: LLM_CONFIG.MAX_TOKENS,
       temperature: LLM_CONFIG.TEMPERATURE,
     });
-
-    const generatedText = response.choices?.[0]?.message?.content?.trim();
 
     if (!generatedText) {
       throw new Error("No job description generated.");

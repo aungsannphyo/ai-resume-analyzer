@@ -8,9 +8,17 @@ export const JobDescriptionService = {
   generate: async (
     payload: JobDescriptionInput,
   ): Promise<JobDescriptionResult & { cached?: boolean }> => {
+    const modelType =
+      typeof window !== "undefined"
+        ? localStorage.getItem("ai-model-type")
+        : null;
+
     const response = await fetch("/api/job-description", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(modelType && { "x-model-type": modelType }),
+      },
       body: JSON.stringify(payload),
     });
 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AnalysisDomain, type AnalysisResult } from "@/types/analysis";
-import { getAnalyzePrompt } from "@/prompts/analyzePrompt";
-import { groq } from "@/utils/groq_config";
+import { getAnalyzePrompt } from "@/prompts/analyze-prompt";
+import { getAIModel } from "@/lib/models/ai-model";
 import { normalizeDomain } from "@/lib/domain-registry";
 
 const isNonEmptyString = (value: unknown): value is string =>
@@ -90,15 +90,12 @@ export async function POST(request: NextRequest) {
     // Construct the analysis prompt using JD as context
     const prompt = getAnalyzePrompt(jdText, resumeText, safeDomain);
 
-    // Call Groq API
-    const response = await groq.chat.completions.create({
-      model: process.env.GROQ_MODEL || "llama-3.1-8b-instant",
-      messages: [
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
+    // Get the AI model instance
+    const modelType = request.headers.get("x-model-type") || undefined;
+    const aiModel = getAIModel(modelType);
+
+    // Call the AI model
+    const generatedText = await aiModel.generateResponse(prompt, {
       max_tokens: 2000,
       temperature: 0.3,
     });
@@ -107,7 +104,6 @@ export async function POST(request: NextRequest) {
     let analysisResult: AnalysisResult;
 
     try {
-      const generatedText = response.choices[0].message.content;
       const jsonStart = generatedText?.indexOf("{") ?? -1;
       const jsonEnd = generatedText?.lastIndexOf("}") ?? -1;
       if (jsonStart === -1 || jsonEnd === -1 || jsonEnd <= jsonStart) {

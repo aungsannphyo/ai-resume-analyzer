@@ -36,14 +36,14 @@ const InputSection = memo(
     onAnalyze,
   }: InputSectionProps) => {
     return (
-      <section className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/50 mb-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-slate-900 mb-2">
+      <section className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 sm:p-10 shadow-xl border border-white/20 mb-8">
+        <div className="mb-10">
+          <h2 className="text-4xl font-bold bg-linear-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-3">
             Job Description & Resume
           </h2>
-          <p className="text-slate-500 font-medium">
+          <p className="text-slate-600 font-medium text-lg">
             Enter the job description and upload the candidate&apos;s resume
-            (PDF only)
+            <span className="text-slate-400 text-sm ml-2">(PDF only)</span>
           </p>
         </div>
 
@@ -51,7 +51,7 @@ const InputSection = memo(
 
         <DomainSelector selectedDomain={domain} onSelect={setDomain} />
 
-        <div className="grid grid-cols-1 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <JDInput jdText={jdText} setJdText={setJdText} />
           <ResumeUpload resumeFile={resumeFile} setResumeFile={setResumeFile} />
         </div>

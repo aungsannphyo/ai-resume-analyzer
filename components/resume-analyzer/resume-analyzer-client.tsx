@@ -61,38 +61,40 @@ const ResumeAnalyzerClient = memo(() => {
   }, [setExportError, resetAnalysis]);
 
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <Navigation />
+    <div className="relative min-h-screen bg-linear-to-br from-gray-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto">
+        <Navigation />
 
-      <main className="min-h-[60vh]">
-        {!showResults && (
-          <InputSection
-            jdText={jdText}
-            setJdText={setJdText}
-            resumeFile={resumeFile}
-            setResumeFile={setResumeFile}
-            domain={domain}
-            setDomain={setDomain}
-            isAnalyzing={isAnalyzing}
-            analysisStep={analysisStep}
-            extractionProgress={extractionProgress}
-            error={error}
-            onAnalyze={handleAnalyze}
-          />
-        )}
+        <main className="min-h-[60vh]">
+          {!showResults && (
+            <InputSection
+              jdText={jdText}
+              setJdText={setJdText}
+              resumeFile={resumeFile}
+              setResumeFile={setResumeFile}
+              domain={domain}
+              setDomain={setDomain}
+              isAnalyzing={isAnalyzing}
+              analysisStep={analysisStep}
+              extractionProgress={extractionProgress}
+              error={error}
+              onAnalyze={handleAnalyze}
+            />
+          )}
 
-        {showResults && analysisResult && (
-          <ResultsSection
-            analysisResult={analysisResult}
-            onExport={handleExport}
-            onNewAnalysis={handleNewAnalysis}
-            isExporting={isExporting}
-            exportError={exportError}
-          />
-        )}
-      </main>
+          {showResults && analysisResult && (
+            <ResultsSection
+              analysisResult={analysisResult}
+              onExport={handleExport}
+              onNewAnalysis={handleNewAnalysis}
+              isExporting={isExporting}
+              exportError={exportError}
+            />
+          )}
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 });

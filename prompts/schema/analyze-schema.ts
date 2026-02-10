@@ -4,6 +4,11 @@ export const getAnalysisSchema = (
   scoreCategories: string[],
 ) => {
   return `{
+  "jdSummary": {
+    "keyRequirements": ["<list top 3-5 must-have skills/qualifications>"],
+    "experienceLevel": "<junior|mid|senior|executive and why>",
+    "culturalFitIndicators": ["<inferred company values or work style>"]
+  },
   "candidateName": "<full name of the candidate extracted from resume>",
   "designation": "<best-fit role + level and why (e.g., Senior Software Engineer - due to 8+ years experience in Node.js) based on the roles: ${domain}>",
   "overallScore": <number 0-100 indicating strategic fit quality>,
@@ -14,7 +19,8 @@ export const getAnalysisSchema = (
         (comp) => `{
       "name": "${comp}",
       "rating": "<Novice|Intermediate|Proficient|Expert>",
-      "evidence": "<specific evidence from resume matching this requirement>"
+      "evidence": "<specific evidence from resume matching this requirement>",
+      "priority": "<high|medium|low based on JD emphasis>"
     }`,
       )
       .join(",\n    ")}
@@ -22,6 +28,7 @@ export const getAnalysisSchema = (
   "strengths": ["<Identify at least 3 specific strengths: 1>", "<2>", "<3>", "<...additional if relevant>"],
   "gaps": ["<Identify at least 3 strategic gaps: 1>", "<2>", "<3>", "<...additional if relevant>"],
   "redFlags": ["<Identify at least 3 potential risks or red flags: 1>", "<2>", "<3>", "<If none are obvious, list subtle points of concern; DO NOT leave empty unless absolutely no risks exist>"],
+  "resumeTailoringSuggestions": ["<1-3 specific recommendations to improve resume match, e.g., highlight X project>"],
   "decision": {
     "status": "<Proceed|Consider|Reject>",
     "reasoning": "<1-2 sentence justification for the decision based on domain requirements>"
