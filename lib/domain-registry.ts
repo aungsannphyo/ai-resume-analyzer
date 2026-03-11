@@ -27,6 +27,11 @@ const domainRegistry: Record<AnalysisDomain, DomainMeta> = {
     label: "Risk & Compliance",
     description: "ERM, AML & Data Privacy",
   },
+  [AnalysisDomain.SALES]: {
+    id: AnalysisDomain.SALES,
+    label: "Sales",
+    description: "Revenue, Growth & Partnerships",
+  },
 };
 
 export const domainOrder: AnalysisDomain[] = [
@@ -34,16 +39,14 @@ export const domainOrder: AnalysisDomain[] = [
   AnalysisDomain.FINANCE_AND_ACCOUNTING,
   AnalysisDomain.HR,
   AnalysisDomain.RISK_AND_COMPLIANCE,
+  AnalysisDomain.SALES,
 ];
 
 export const domainList = domainOrder.map((id) => domainRegistry[id]);
 
-export const isAnalysisDomain = (
-  value: unknown,
-): value is AnalysisDomain => {
+export const isAnalysisDomain = (value: unknown): value is AnalysisDomain => {
   return (
-    typeof value === "string" &&
-    domainOrder.includes(value as AnalysisDomain)
+    typeof value === "string" && domainOrder.includes(value as AnalysisDomain)
   );
 };
 

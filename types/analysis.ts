@@ -3,6 +3,7 @@ export enum AnalysisDomain {
   HR = "HR",
   RISK_AND_COMPLIANCE = "Risk and Compliance",
   FINANCE_AND_ACCOUNTING = "Accounting and Finance",
+  SALES = "Sales",
 }
 
 export enum AnalysisStep {

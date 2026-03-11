@@ -5,6 +5,7 @@ import {
   Laptop,
   ShieldAlert,
   Users,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react";
 
@@ -49,6 +50,13 @@ const domainUi: Record<AnalysisDomain, DomainUiConfig> = {
     bg: "bg-orange-100/50",
     border: "hover:border-orange-500/50",
     active: "border-orange-500 bg-orange-50/50 ring-orange-500/10",
+  },
+  [AnalysisDomain.SALES]: {
+    icon: TrendingUp,
+    color: "text-violet-600",
+    bg: "bg-violet-100/50",
+    border: "hover:border-violet-500/50",
+    active: "border-violet-500 bg-violet-50/50 ring-violet-500/10",
   },
 };
 

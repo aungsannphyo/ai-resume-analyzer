@@ -3,6 +3,7 @@ import { techPrompt } from "./domains/tech";
 import { hrPrompt } from "./domains/hr";
 import { riskPrompt } from "./domains/risk";
 import { financePrompt } from "./domains/finance";
+import { salesPrompt } from "./domains/sales";
 import type { DomainPromptData } from "./domains/types";
 
 const domainPrompts: Record<AnalysisDomain, DomainPromptData> = {
@@ -10,6 +11,7 @@ const domainPrompts: Record<AnalysisDomain, DomainPromptData> = {
   [AnalysisDomain.HR]: hrPrompt,
   [AnalysisDomain.RISK_AND_COMPLIANCE]: riskPrompt,
   [AnalysisDomain.FINANCE_AND_ACCOUNTING]: financePrompt,
+  [AnalysisDomain.SALES]: salesPrompt,
 };
 
 export const getDomainPrompt = (domain: AnalysisDomain): DomainPromptData => {

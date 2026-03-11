@@ -55,19 +55,19 @@ const DomainSelector = ({ selectedDomain, onSelect }: DomainSelectorProps) => {
 
   return (
     <div className="mb-10">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
           <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
             <LayoutGrid className="w-6 h-6 text-[#5cbe4c]" />
             Target Domain
           </h3>
-          <p className="text-sm text-slate-500 mt-1 font-medium">
-            Select the domain to enable Chief-level specialized analysis
+          <p className="text-sm text-slate-500 mt-0.5 font-medium">
+            Select specialized analysis domain
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="flex flex-wrap gap-3">
         {domains.map((domain) => {
           const Icon = domain.icon;
           const isActive = selectedDomain === domain.id;
@@ -76,36 +76,29 @@ const DomainSelector = ({ selectedDomain, onSelect }: DomainSelectorProps) => {
             <button
               key={domain.id}
               onClick={() => onSelect(domain.id)}
-              className={`group flex flex-col p-5 rounded-3xl border-2 transition-all duration-300 cursor-pointer text-left relative overflow-hidden ${
+              className={`group flex items-center gap-3 px-4 py-2.5 rounded-2xl border-2 transition-all duration-300 cursor-pointer relative overflow-hidden ${
                 isActive
                   ? `${domain.active} ring-4 shadow-sm`
-                  : `border-slate-100 bg-white shadow-sm ${domain.border} hover:shadow-md hover:-translate-y-1`
+                  : `border-slate-100 bg-white shadow-sm ${domain.border} hover:shadow-md hover:-translate-y-0.5`
               }`}
             >
               <div
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110 ${domain.bg} ${domain.color}`}
+                className={`w-8 h-8 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 ${domain.bg} ${domain.color}`}
               >
-                <Icon className="w-6 h-6" />
+                <Icon className="w-5 h-5" />
               </div>
 
-              <div className="space-y-1">
-                <span
-                  className={`block font-bold text-lg transition-colors ${isActive ? "text-slate-900" : "text-slate-700 group-hover:text-slate-900"}`}
-                >
-                  {domain.label}
-                </span>
-                <span
-                  className={`block text-xs leading-relaxed font-medium transition-colors ${isActive ? "text-slate-600" : "text-slate-400 group-hover:text-slate-500"}`}
-                >
-                  {domain.description}
-                </span>
-              </div>
+              <span
+                className={`block font-bold text-sm transition-colors whitespace-nowrap ${isActive ? "text-slate-900" : "text-slate-700 group-hover:text-slate-900"}`}
+              >
+                {domain.label}
+              </span>
 
               {isActive && (
-                <div className="absolute top-4 right-4 animate-in fade-in zoom-in duration-300">
-                  <div className="bg-[#5cbe4c] rounded-full p-1 shadow-sm">
+                <div className="animate-in fade-in zoom-in duration-300 ml-1">
+                  <div className="bg-[#5cbe4c] rounded-full p-0.5 shadow-sm">
                     <svg
-                      className="w-4 h-4 text-white"
+                      className="w-3 h-3 text-white"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -113,7 +106,7 @@ const DomainSelector = ({ selectedDomain, onSelect }: DomainSelectorProps) => {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={3}
+                        strokeWidth={4}
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
