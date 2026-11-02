@@ -4,29 +4,32 @@ import { useState, useEffect } from "react";
 
 const MODEL_OPTIONS = [
   {
-    value: "instant",
-    label: "Instant",
-    description: "Fast responses",
-    icon: "⚡",
-  },
-  {
     value: "versatile",
     label: "Versatile",
     description: "Powerful analysis",
     icon: "🧠",
+  },
+  {
+    value: "instant",
+    label: "Instant",
+    description: "Fast responses",
+    icon: "⚡",
   },
 ] as const;
 
 type ModelType = (typeof MODEL_OPTIONS)[number]["value"];
 
 export function ModelSelector() {
-  const [selectedModel, setSelectedModel] = useState<ModelType>("instant");
+  const [selectedModel, setSelectedModel] = useState<ModelType>("versatile");
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("ai-model-type") as ModelType;
     if (saved && MODEL_OPTIONS.some((opt) => opt.value === saved)) {
       setSelectedModel(saved);
+    } else {
+      setSelectedModel("versatile");
+      localStorage.setItem("ai-model-type", "versatile");
     }
   }, []);
 
